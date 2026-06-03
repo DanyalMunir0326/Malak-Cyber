@@ -1,0 +1,13 @@
+requests
+python-nmap
+python-whois
+dnspython
+rich
+colorama
+beautifulsoup4
+urllib3
+pyOpenSSL
+cryptography
+impacket
+paramiko
+pymongo

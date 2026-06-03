@@ -1,0 +1,606 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>malak-cyber &mdash; 12.234.342.423</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ── TOKENS ──────────────────────────────────────────── */
+:root{
+  --bg:        #060810;
+  --bg2:       #0c0f1a;
+  --bg3:       #111627;
+  --panel:     #0e1220;
+  --panel2:    #141928;
+  --border:    #1e2a40;
+  --border2:   #263350;
+  --text:      #dde6f5;
+  --muted:     #5a6a8a;
+  --dim:       #3a4a6a;
+
+  --cyan:      #00e5ff;
+  --cyan-dim:  rgba(0,229,255,.12);
+  --cyan-glow: 0 0 18px rgba(0,229,255,.35);
+  --red:       #ff3b5c;
+  --red-dim:   rgba(255,59,92,.13);
+  --orange:    #ff7b2e;
+  --orange-dim:rgba(255,123,46,.13);
+  --yellow:    #ffd93d;
+  --yellow-dim:rgba(255,217,61,.11);
+  --blue:      #4a9eff;
+  --blue-dim:  rgba(74,158,255,.12);
+  --grey:      #6b7a96;
+  --grey-dim:  rgba(107,122,150,.15);
+
+  --radius:    6px;
+  --font-mono: 'Share Tech Mono', monospace;
+  --font-head: 'Rajdhani', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+/* ── RESET ───────────────────────────────────────────── */
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--font-body);
+  font-size:14px;
+  line-height:1.65;
+  overflow-x:hidden;
+}
+
+/* ── SCANLINE OVERLAY ────────────────────────────────── */
+body::before{
+  content:'';
+  pointer-events:none;
+  position:fixed;inset:0;z-index:9999;
+  background:repeating-linear-gradient(
+    0deg,
+    transparent,transparent 2px,
+    rgba(0,0,0,.07) 2px,rgba(0,0,0,.07) 4px
+  );
+}
+
+/* ── LAYOUT ──────────────────────────────────────────── */
+.page{
+  display:grid;
+  grid-template-columns:220px 1fr;
+  min-height:100vh;
+}
+
+/* ── SIDEBAR ─────────────────────────────────────────── */
+.sidebar{
+  background:var(--bg2);
+  border-right:1px solid var(--border);
+  position:sticky;top:0;height:100vh;
+  overflow-y:auto;
+  padding:28px 0 40px;
+  display:flex;flex-direction:column;
+  gap:4px;
+  animation:fadeInLeft .5s ease both;
+}
+.sidebar-logo{
+  padding:0 20px 24px;
+  border-bottom:1px solid var(--border);
+  margin-bottom:12px;
+}
+.sidebar-logo span{
+  font-family:var(--font-mono);
+  font-size:17px;
+  color:var(--cyan);
+  letter-spacing:.05em;
+  text-shadow:var(--cyan-glow);
+}
+.sidebar-logo small{
+  display:block;
+  color:var(--muted);
+  font-size:11px;
+  margin-top:3px;
+  font-family:var(--font-mono);
+}
+.nav-label{
+  font-family:var(--font-mono);
+  font-size:9px;
+  letter-spacing:.18em;
+  color:var(--dim);
+  text-transform:uppercase;
+  padding:14px 20px 5px;
+}
+.nav-link{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  padding:8px 20px;
+  color:var(--muted);
+  text-decoration:none;
+  font-size:13px;
+  font-family:var(--font-body);
+  transition:background .15s,color .15s,border-color .15s;
+  border-left:2px solid transparent;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.nav-link:hover{
+  background:var(--panel);
+  color:var(--text);
+  border-left-color:var(--cyan);
+}
+.nav-link .ico{font-size:13px;width:16px;text-align:center;flex-shrink:0;}
+.sidebar-risk{
+  margin:auto 20px 0;
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:14px;
+  font-family:var(--font-mono);
+  font-size:11px;
+}
+.sidebar-risk .label{color:var(--muted);margin-bottom:4px;}
+.sidebar-risk .val{font-size:20px;font-weight:700;font-family:var(--font-head);letter-spacing:.04em;}
+
+/* ── MAIN CONTENT ────────────────────────────────────── */
+.content{
+  padding:40px 48px 80px;
+  max-width:1100px;
+  animation:fadeIn .6s ease both;
+}
+
+/* ── COVER ───────────────────────────────────────────── */
+.cover{
+  padding:60px 0 50px;
+  border-bottom:1px solid var(--border);
+  position:relative;
+  overflow:hidden;
+}
+.cover::before{
+  content:'';
+  position:absolute;
+  top:-80px;right:-120px;
+  width:500px;height:500px;
+  background:radial-gradient(circle,rgba(0,229,255,.06) 0%,transparent 65%);
+  pointer-events:none;
+}
+.cover-kicker{
+  font-family:var(--font-mono);
+  font-size:11px;
+  letter-spacing:.25em;
+  color:var(--cyan);
+  text-transform:uppercase;
+  margin-bottom:16px;
+  opacity:.9;
+}
+.cover h1{
+  font-family:var(--font-head);
+  font-size:52px;
+  font-weight:700;
+  letter-spacing:.02em;
+  line-height:1.1;
+  margin-bottom:6px;
+  background:linear-gradient(135deg,#fff 30%,var(--cyan) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.cover-sub{
+  color:var(--muted);
+  font-family:var(--font-mono);
+  font-size:13px;
+  margin-bottom:28px;
+  line-height:1.9;
+}
+.cover-sub strong{color:var(--text);}
+
+/* ── SEVERITY BADGES ─────────────────────────────────── */
+.badges{display:flex;flex-wrap:wrap;gap:10px;margin:24px 0 0;}
+.badge{
+  display:inline-flex;align-items:center;gap:7px;
+  border-radius:4px;padding:7px 14px;
+  font-weight:600;font-size:12px;
+  font-family:var(--font-mono);
+  letter-spacing:.05em;
+  transition:transform .15s,box-shadow .15s;
+  cursor:default;
+}
+.badge:hover{transform:translateY(-2px);}
+.badge .dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.Critical{background:var(--red-dim);color:#ff8fa0;border:1px solid rgba(255,59,92,.4);}
+.Critical .dot{background:var(--red);box-shadow:0 0 6px var(--red);}
+.High{background:var(--orange-dim);color:#ffb07a;border:1px solid rgba(255,123,46,.4);}
+.High .dot{background:var(--orange);box-shadow:0 0 6px var(--orange);}
+.Medium{background:var(--yellow-dim);color:#ffe57a;border:1px solid rgba(255,217,61,.35);}
+.Medium .dot{background:var(--yellow);box-shadow:0 0 6px var(--yellow);}
+.Low{background:var(--blue-dim);color:#9ac5ff;border:1px solid rgba(74,158,255,.35);}
+.Low .dot{background:var(--blue);box-shadow:0 0 6px var(--blue);}
+.Info{background:var(--grey-dim);color:#a0aec0;border:1px solid rgba(107,122,150,.4);}
+.Info .dot{background:var(--grey);}
+
+/* ── SECTIONS ────────────────────────────────────────── */
+section{margin:48px 0;}
+.section-header{
+  display:flex;align-items:center;gap:12px;
+  border-bottom:1px solid var(--border);
+  padding-bottom:10px;
+  margin-bottom:24px;
+}
+.section-header h2{
+  font-family:var(--font-head);
+  font-size:20px;
+  font-weight:600;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:var(--text);
+}
+.section-header .section-num{
+  font-family:var(--font-mono);
+  font-size:11px;
+  color:var(--cyan);
+  opacity:.7;
+}
+
+/* ── GRID ────────────────────────────────────────────── */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;}
+.panel{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:20px;
+  transition:border-color .2s,box-shadow .2s;
+}
+.panel:hover{border-color:var(--border2);box-shadow:0 4px 24px rgba(0,0,0,.35);}
+.panel h3{
+  font-family:var(--font-head);
+  font-size:13px;
+  font-weight:600;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--cyan);
+  margin-bottom:14px;
+  padding-bottom:8px;
+  border-bottom:1px solid var(--border);
+}
+
+/* ── TABLES ──────────────────────────────────────────── */
+.table-wrap{overflow-x:auto;border-radius:var(--radius);border:1px solid var(--border);}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{
+  background:var(--bg3);
+  color:var(--cyan);
+  font-family:var(--font-mono);
+  font-size:11px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  padding:10px 14px;
+  text-align:left;
+  border-bottom:1px solid var(--border2);
+  white-space:nowrap;
+}
+td{
+  padding:9px 14px;
+  border-bottom:1px solid var(--border);
+  vertical-align:top;
+  color:var(--text);
+}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,.02);}
+
+/* ── CODE / PRE ──────────────────────────────────────── */
+code,pre{font-family:var(--font-mono);}
+pre{
+  background:var(--bg);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:16px;
+  font-size:12px;
+  color:#8899bb;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+  line-height:1.7;
+}
+
+/* ── LISTS ───────────────────────────────────────────── */
+ul,ol{padding-left:20px;}
+li{
+  margin-bottom:5px;
+  color:var(--text);
+  font-size:13px;
+}
+ul li::marker{color:var(--cyan);}
+
+/* ── FINDING CARDS ───────────────────────────────────── */
+.finding{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:24px;
+  margin-bottom:16px;
+  position:relative;
+  transition:border-color .2s,box-shadow .2s;
+  overflow:hidden;
+}
+.finding::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:2px;
+}
+.finding.sev-Critical{border-left:3px solid var(--red);}
+.finding.sev-Critical::before{background:linear-gradient(90deg,var(--red),transparent);}
+.finding.sev-High{border-left:3px solid var(--orange);}
+.finding.sev-High::before{background:linear-gradient(90deg,var(--orange),transparent);}
+.finding.sev-Medium{border-left:3px solid var(--yellow);}
+.finding.sev-Medium::before{background:linear-gradient(90deg,var(--yellow),transparent);}
+.finding.sev-Low{border-left:3px solid var(--blue);}
+.finding.sev-Low::before{background:linear-gradient(90deg,var(--blue),transparent);}
+.finding.sev-Info{border-left:3px solid var(--grey);}
+.finding.sev-Info::before{background:linear-gradient(90deg,var(--grey),transparent);}
+.finding:hover{border-color:var(--border2);box-shadow:0 6px 28px rgba(0,0,0,.4);}
+.finding-header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:14px;flex-wrap:wrap;}
+.finding-title{
+  font-family:var(--font-head);
+  font-size:18px;
+  font-weight:600;
+  letter-spacing:.03em;
+  color:var(--text);
+}
+.finding-meta{
+  display:flex;flex-wrap:wrap;gap:8px;
+  font-family:var(--font-mono);
+  font-size:11px;
+  margin-bottom:14px;
+}
+.meta-chip{
+  background:var(--bg3);
+  border:1px solid var(--border);
+  border-radius:3px;
+  padding:3px 8px;
+  color:var(--muted);
+}
+.meta-chip strong{color:var(--text);}
+.finding-section-label{
+  font-family:var(--font-mono);
+  font-size:10px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin:14px 0 6px;
+}
+.finding p{font-size:13px;color:var(--text);margin-bottom:4px;line-height:1.7;}
+
+/* ── RISK METER ──────────────────────────────────────── */
+.risk-Critical{color:var(--red);text-shadow:0 0 10px var(--red);}
+.risk-High{color:var(--orange);text-shadow:0 0 10px var(--orange);}
+.risk-Medium{color:var(--yellow);}
+.risk-Low{color:var(--blue);}
+.risk-Info,.risk-None{color:var(--grey);}
+
+/* ── ROADMAP ─────────────────────────────────────────── */
+.roadmap-group{margin-bottom:28px;}
+.roadmap-group h3{
+  font-family:var(--font-mono);
+  font-size:11px;
+  letter-spacing:.15em;
+  text-transform:uppercase;
+  margin-bottom:10px;
+  padding:7px 12px;
+  border-radius:4px;
+}
+.roadmap-Critical{background:var(--red-dim);color:#ff8fa0;border:1px solid rgba(255,59,92,.3);}
+.roadmap-High{background:var(--orange-dim);color:#ffb07a;border:1px solid rgba(255,123,46,.3);}
+.roadmap-Medium{background:var(--yellow-dim);color:#ffe57a;border:1px solid rgba(255,217,61,.25);}
+.roadmap-Low{background:var(--blue-dim);color:#9ac5ff;border:1px solid rgba(74,158,255,.25);}
+.roadmap-Info{background:var(--grey-dim);color:#a0aec0;border:1px solid rgba(107,122,150,.3);}
+
+/* ── LINKS ───────────────────────────────────────────── */
+a{color:var(--cyan);text-decoration:none;}
+a:hover{text-decoration:underline;opacity:.85;}
+
+/* ── UTILITY ─────────────────────────────────────────── */
+.muted{color:var(--muted);font-size:13px;}
+.mono{font-family:var(--font-mono);}
+
+/* ── ANIMATIONS ──────────────────────────────────────── */
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes fadeInLeft{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:none}}
+
+/* ── SCROLLBAR ───────────────────────────────────────── */
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:var(--bg2);}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ── SIDEBAR ── -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <span>malak-cyber</span>
+    <small>v1.0.0 &mdash; Pentest Report</small>
+  </div>
+
+  <span class="nav-label">Navigation</span>
+  <a class="nav-link" href="#cover"><span class="ico">⬡</span> Overview</a>
+  <a class="nav-link" href="#summary"><span class="ico">▸</span> Exec Summary</a>
+  <a class="nav-link" href="#surface"><span class="ico">◈</span> Attack Surface</a>
+  <a class="nav-link" href="#recon"><span class="ico">◉</span> Passive Recon</a>
+  <a class="nav-link" href="#findings"><span class="ico">⚑</span> Findings</a>
+  <a class="nav-link" href="#cves"><span class="ico">◇</span> CVE Table</a>
+  <a class="nav-link" href="#roadmap"><span class="ico">▤</span> Roadmap</a>
+  <a class="nav-link" href="#appendix"><span class="ico">≡</span> Appendix</a>
+
+  <div class="sidebar-risk">
+    <div class="label">OVERALL RISK</div>
+    <div class="val risk-Low">Low</div>
+    <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:5px;">
+      <span style="background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:3px;padding:2px 6px;font-family:var(--font-mono);font-size:10px;color:var(--red);">C:0</span>
+      <span style="background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:3px;padding:2px 6px;font-family:var(--font-mono);font-size:10px;color:var(--orange);">H:0</span>
+      <span style="background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:3px;padding:2px 6px;font-family:var(--font-mono);font-size:10px;color:var(--yellow);">M:0</span>
+      <span style="background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:3px;padding:2px 6px;font-family:var(--font-mono);font-size:10px;color:var(--blue);">L:2</span>
+      <span style="background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:3px;padding:2px 6px;font-family:var(--font-mono);font-size:10px;color:var(--grey);">I:0</span>
+    </div>
+  </div>
+</nav>
+
+<!-- ── MAIN ── -->
+<main class="content">
+
+  <!-- COVER -->
+  <section class="cover" id="cover">
+    <div class="cover-kicker">Security Assessment Report</div>
+    <h1>malak-cyber</h1>
+    <div class="cover-sub">
+      <strong>Target:</strong> 12.234.342.423<br>
+      <strong>Analyst:</strong> faiz<br>
+      <strong>Date:</strong> 2026-06-03 15:09:23 Pakistan Standard Time<br>
+      <strong>Mode:</strong> Full Assessment
+    </div>
+    <div class="badges">
+      <span class="badge Critical"><span class="dot"></span>CRITICAL&nbsp;0</span>
+      <span class="badge High"><span class="dot"></span>HIGH&nbsp;0</span>
+      <span class="badge Medium"><span class="dot"></span>MEDIUM&nbsp;0</span>
+      <span class="badge Low"><span class="dot"></span>LOW&nbsp;2</span>
+      <span class="badge Info"><span class="dot"></span>INFO&nbsp;0</span>
+    </div>
+  </section>
+
+  <!-- EXEC SUMMARY -->
+  <section id="summary">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <h2>Executive Summary</h2>
+    </div>
+    <p style="max-width:720px;line-height:1.8;color:var(--text);">
+      malak-cyber assessed <strong>12.234.342.423</strong> and produced
+      <strong>2</strong> findings across passive reconnaissance, active enumeration,
+      web application checks, and configuration review. The current overall risk is
+      <strong class="risk-Low">Low</strong>, based on the highest-severity confirmed
+      observations collected during this run.
+    </p>
+  </section>
+
+  <!-- ATTACK SURFACE -->
+  <section id="surface">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2>Attack Surface Overview</h2>
+    </div>
+    <div class="grid">
+      <div class="panel"><h3>Open Ports</h3><p class="muted">None recorded.</p></div>
+      <div class="panel"><h3>Live Subdomains</h3><p class="muted">None recorded.</p></div>
+      <div class="panel"><h3>Detected Technologies</h3><p class="muted">None recorded.</p></div>
+      <div class="panel"><h3>Sensitive Paths</h3><p class="muted">None recorded.</p></div>
+    </div>
+  </section>
+
+  <!-- PASSIVE RECON -->
+  <section id="recon">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2>Passive Recon Summary</h2>
+    </div>
+    <h3 style="font-family:var(--font-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);margin:0 0 10px;">WHOIS</h3>
+    <p class="muted">None recorded.</p>
+    <h3 style="font-family:var(--font-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);margin:24px 0 10px;">DNS Records</h3>
+    <div class="table-wrap"><table><tr><th>A</th><td>[]</td></tr><tr><th>AAAA</th><td>[]</td></tr><tr><th>MX</th><td>[]</td></tr><tr><th>NS</th><td>[]</td></tr><tr><th>TXT</th><td>[]</td></tr><tr><th>SOA</th><td>[]</td></tr><tr><th>CNAME</th><td>[]</td></tr><tr><th>PTR</th><td>[]</td></tr></table></div>
+    <h3 style="font-family:var(--font-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);margin:24px 0 10px;">Certificate Transparency</h3>
+    <p class="muted">None recorded.</p>
+    <h3 style="font-family:var(--font-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);margin:24px 0 10px;">Manual Dorking Checklist</h3>
+    <ul><li>site:12.234.342.423</li><li>site:12.234.342.423 filetype:pdf</li><li>site:12.234.342.423 filetype:sql OR filetype:bak OR filetype:env</li><li>site:12.234.342.423 inurl:admin OR inurl:login OR inurl:dashboard</li><li>site:12.234.342.423 intitle:&quot;index of&quot;</li><li>site:12.234.342.423 &quot;password&quot; OR &quot;secret&quot; OR &quot;api_key&quot;</li></ul>
+  </section>
+
+  <!-- FINDINGS -->
+  <section id="findings">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <h2>Findings &mdash; Full Detail</h2>
+    </div>
+    <article class="finding sev-Low">
+  <div class="finding-header">
+    <div class="finding-title">Missing SPF</div>
+    <span class="badge Low"><span class="dot"></span>LOW</span>
+  </div>
+  <div class="finding-meta">
+    <span class="meta-chip"><strong>CVSS</strong> 3.1</span>
+    <span class="meta-chip"><strong>Vector</strong> CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N</span>
+    <span class="meta-chip"><strong>CVE</strong> N/A</span>
+    <span class="meta-chip"><strong>Category</strong> Config</span>
+  </div>
+  <div class="finding-section-label">Description</div>
+  <p>SPF record was not detected.</p>
+  <div class="finding-section-label">Evidence</div>
+  <pre>No TXT record containing v=spf1 was found.</pre>
+  <div class="finding-section-label">Risk</div>
+  <p>This may increase attack surface or exposure if left unaddressed.</p>
+  <div class="finding-section-label">Mitigation</div>
+  <ol><li>Publish an SPF TXT record.</li><li>Limit permitted mail senders.</li><li>Test SPF alignment.</li></ol>
+  <div class="finding-section-label">References</div>
+  <ul><li>N/A</li></ul>
+</article><article class="finding sev-Low">
+  <div class="finding-header">
+    <div class="finding-title">Missing DMARC</div>
+    <span class="badge Low"><span class="dot"></span>LOW</span>
+  </div>
+  <div class="finding-meta">
+    <span class="meta-chip"><strong>CVSS</strong> 3.1</span>
+    <span class="meta-chip"><strong>Vector</strong> CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N</span>
+    <span class="meta-chip"><strong>CVE</strong> N/A</span>
+    <span class="meta-chip"><strong>Category</strong> Config</span>
+  </div>
+  <div class="finding-section-label">Description</div>
+  <p>DMARC record was not detected.</p>
+  <div class="finding-section-label">Evidence</div>
+  <pre>No DMARC TXT record found for _dmarc.12.234.342.423.</pre>
+  <div class="finding-section-label">Risk</div>
+  <p>This may increase attack surface or exposure if left unaddressed.</p>
+  <div class="finding-section-label">Mitigation</div>
+  <ol><li>Publish a DMARC record.</li><li>Start with monitoring mode.</li><li>Move toward quarantine or reject after review.</li></ol>
+  <div class="finding-section-label">References</div>
+  <ul><li>N/A</li></ul>
+</article>
+  </section>
+
+  <!-- CVE TABLE -->
+  <section id="cves">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <h2>CVE Correlation Table</h2>
+    </div>
+    <p class="muted">None recorded.</p>
+  </section>
+
+  <!-- ROADMAP -->
+  <section id="roadmap">
+    <div class="section-header">
+      <span class="section-num">06</span>
+      <h2>Remediation Roadmap</h2>
+    </div>
+    <div class="roadmap-group"><h3 class="roadmap-Critical">Fix Immediately — Critical</h3><p class="muted">None recorded.</p></div><div class="roadmap-group"><h3 class="roadmap-High">Fix Immediately — High</h3><p class="muted">None recorded.</p></div><div class="roadmap-group"><h3 class="roadmap-Medium">Fix Soon — Medium</h3><p class="muted">None recorded.</p></div><div class="roadmap-group"><h3 class="roadmap-Low">Fix When Possible — Low</h3><ul><li>Missing SPF: Publish an SPF TXT record.</li><li>Missing DMARC: Publish a DMARC record.</li></ul></div><div class="roadmap-group"><h3 class="roadmap-Info">Informational</h3><p class="muted">None recorded.</p></div>
+  </section>
+
+  <!-- APPENDIX -->
+  <section id="appendix">
+    <div class="section-header">
+      <span class="section-num">07</span>
+      <h2>Appendix</h2>
+    </div>
+    <h3 style="font-family:var(--font-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);margin:0 0 10px;">Full Port Scan Raw Output</h3>
+    <pre>host;hostname;hostname_type;protocol;port;name;state;product;extrainfo;reason;version;conf;cpe
+</pre>
+    <h3 style="font-family:var(--font-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);margin:24px 0 10px;">All Discovered URLs / Endpoints</h3>
+    <ul><li>http://12.234.342.423</li></ul>
+    <h3 style="font-family:var(--font-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);margin:24px 0 10px;">All Tested Payloads Log</h3>
+    <p class="muted">None recorded.</p>
+    <h3 style="font-family:var(--font-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);margin:24px 0 10px;">Subdomain Enumeration Full List</h3>
+    <p class="muted">None recorded.</p>
+    <h3 style="font-family:var(--font-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);margin:24px 0 10px;">Tool Version &amp; Scan Parameters</h3>
+    <pre>malak-cyber version: 1.0.0
+Mode:     Full Assessment
+Target:   12.234.342.423
+Host:     12.234.342.423
+Base URL: http://12.234.342.423</pre>
+    <h3 style="font-family:var(--font-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);margin:24px 0 10px;">Warnings</h3>
+    <ul><li>WHOIS lookup failed: Whois command returned no output</li><li>Certificate transparency lookup failed: HTTPSConnectionPool(host=&#x27;crt.sh&#x27;, port=443): Read timed out. (read timeout=10)</li><li>Technology fingerprinting failed: HTTPConnectionPool(host=&#x27;12.234.342.423&#x27;, port=80): Max retries exceeded with url: / (Caused by NameResolutionError(&quot;HTTPConnection(host=&#x27;12.234.342.423&#x27;, port=80): Failed to resolve &#x27;12.234.342.423&#x27; ([Errno 11001] getaddrinfo failed)&quot;))</li><li>Header/cookie checks failed: HTTPConnectionPool(host=&#x27;12.234.342.423&#x27;, port=80): Max retries exceeded with url: / (Caused by NameResolutionError(&quot;HTTPConnection(host=&#x27;12.234.342.423&#x27;, port=80): Failed to resolve &#x27;12.234.342.423&#x27; ([Errno 11001] getaddrinfo failed)&quot;))</li></ul>
+  </section>
+
+</main>
+</div>
+</body>
+</html>
