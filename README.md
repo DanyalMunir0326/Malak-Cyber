@@ -36,7 +36,7 @@
 
 ### Reporting
 
-* Fully offline HTML report generation
+* Fully offline HTML and PDF report generation
 * Self-contained reports with inline CSS
 * No external CDN dependencies
 * Professional risk summaries and findings
